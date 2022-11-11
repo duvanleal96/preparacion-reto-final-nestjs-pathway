@@ -27,6 +27,7 @@ export class UsersController {
   }
 
   @Post()
+  @UseGuards(GuardAuth)
   @UseInterceptors(ResponseInterceptor)
   postUsers(
     @Body(
@@ -48,6 +49,7 @@ export class UsersController {
   }
 
   @Put('/:uuid')
+  @UseGuards(GuardAuth)
   @UseInterceptors(ResponseInterceptor)
   putUsers(@Param('uuid') uuid: string, @Body() users: UserPutDto) {
     console.log(uuid);
@@ -55,6 +57,7 @@ export class UsersController {
   }
 
   @Patch(':uuid')
+  @UseGuards(GuardAuth)
   @UseInterceptors(ResponseInterceptor)
   updatePatchUser(
     @Param('uuid') uuid: string,
