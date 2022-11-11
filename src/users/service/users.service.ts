@@ -32,9 +32,15 @@ export class UsersService {
     this.users.push(user);
     return user;
   }
-  getById(uuid: string): UserGetDto | undefined {
-    return this.users.find((user: UserGetDto) => (user.uuid = uuid));
+
+  getById(uuid: string): UserGetDto {
+    const user = this.users.find((user: UserGetDto) => user.uuid == uuid);
+    if (user == undefined) {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
+    return user;
   }
+
   putUser(uuid: string, users: UserPutDto) {
     const user = this.users.find((user: UserPutDto) => (user.uuid = uuid));
     if (user != undefined) {

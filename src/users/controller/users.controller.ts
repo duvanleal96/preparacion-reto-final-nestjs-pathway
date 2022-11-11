@@ -19,7 +19,6 @@ import { UserPostDto } from '../dto/user.post.dto';
 import { UserPutDto } from '../dto/user.patch.dto';
 
 @Controller('users')
-@UseGuards(GuardAuth)
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
   @Get('')
