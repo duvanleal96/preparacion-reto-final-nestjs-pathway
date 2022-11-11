@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserGetDto } from '../dto/user.get.dto';
 import { UserPostDto } from '../dto/user.post.dto';
 import { UserPutDto } from '../dto/user.patch.dto';
@@ -43,6 +43,20 @@ export class UsersService {
       user.email = users.email;
     }
     return user;
+  }
+  updatePatchUser(uuid: string, userUpdate: UserPutDto): UserPutDto {
+    const user = this.users.find((user: UserPutDto) => user.uuid == uuid);
+    if (user == undefined) {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
+    const userPatch: UserPutDto = {
+      ...user,
+      ...userUpdate,
+    };
+    this.users = this.users.map((user: UserPutDto) => {
+      return user.uuid == uuid ? userPatch : user;
+    });
+    return userPatch;
   }
   deleUser(uuid: string): boolean {
     const deleteUser = this.users.find(
