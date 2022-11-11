@@ -19,6 +19,7 @@ import { UserPostDto } from '../dto/user.post.dto';
 import { UserPutDto } from '../dto/user.patch.dto';
 
 @Controller('users')
+@UseGuards(GuardAuth)
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
   @Get('')
@@ -28,7 +29,6 @@ export class UsersController {
 
   @Post()
   @UseInterceptors(ResponseInterceptor)
-  @UseGuards(GuardAuth)
   postUsers(
     @Body(
       new ValidationPipe({
@@ -42,14 +42,13 @@ export class UsersController {
     return this.userService.createUsers(user);
   }
 
-  @Get('/:uuid')
+  @Get(':uuid')
   @UseInterceptors(ResponseInterceptor)
-  getUserByUuid(@Param('uuid') uuid: string): UserGetDto | undefined {
+  getUserByUuid(@Param('uuid') uuid: string) {
     return this.userService.getById(uuid);
   }
 
   @Put('/:uuid')
-  @UseGuards(GuardAuth)
   @UseInterceptors(ResponseInterceptor)
   putUsers(@Param('uuid') uuid: string, @Body() users: UserPutDto) {
     console.log(uuid);
@@ -57,7 +56,6 @@ export class UsersController {
   }
 
   @Patch(':uuid')
-  @UseGuards(GuardAuth)
   @UseInterceptors(ResponseInterceptor)
   updatePatchUser(
     @Param('uuid') uuid: string,
